@@ -44,9 +44,16 @@
   [resultDict setObject:service.domain forKey:@"domain"];
   [resultDict setObject:[NSNumber numberWithBool:moreComing] forKey:@"moreComing"];
 
-  self.currentResolve = [[NSNetService alloc] initWithDomain:service.domain type:service.type name:service.name];
+  /*self.currentResolve = [[NSNetService alloc] initWithDomain:service.domain type:service.type name:service.name];
   [self.currentResolve setDelegate:self];
-  [self.currentResolve resolveWithTimeout:0.0];
+  [self.currentResolve resolveWithTimeout:0.0];*/
+
+  if (!self.services) {
+        self.services = [[NSMutableArray alloc] init];
+    }
+    [self.services addObject:service];
+    [service setDelegate:self];
+    [service resolveWithTimeout:3.0];
 }
 
 - (void)netServiceDidResolveAddress:(NSNetService *)service {

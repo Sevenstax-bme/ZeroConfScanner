@@ -37,6 +37,7 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 
 import javax.jmdns.JmDNS;
+import javax.jmdns.impl.JmDNSImpl;
 import javax.jmdns.ServiceEvent;
 import javax.jmdns.ServiceInfo;
 import javax.jmdns.ServiceListener;
@@ -164,6 +165,8 @@ public class ZeroConf extends CordovaPlugin {
 			return;
 		}
 		jmdns.removeServiceListener(type, listener);
+		Log.d("ZeroConf", "Set jmdns object back to null");
+		jmdns = null;
 	}
 
 	private void register(String type, String name, int port, String text) {
@@ -198,6 +201,8 @@ public class ZeroConf extends CordovaPlugin {
 		Log.d("ZeroConf", "Setup watcher");
 		try {
 			jmdns = JmDNS.create(ZeroConf.getIPAddress());
+			Log.d("ZeroConf", "Clear Cache");
+			((JmDNSImpl) jmdns).getCache().clear();
 			listener = new ServiceListener() {
 
 				public void serviceResolved(ServiceEvent ev) {

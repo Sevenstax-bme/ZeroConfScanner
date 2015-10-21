@@ -17,6 +17,7 @@
 @property (nonatomic, copy) NSString* browseCallback;
 @property (nonatomic, retain, readwrite) NSNetServiceBrowser* netServiceBrowser;
 @property (nonatomic, retain, readwrite) NSNetService* currentResolve;
+@property (nonatomic, strong) NSMutableArray *services;
 
 - (void)watch:(CDVInvokedUrlCommand*)command;
 
