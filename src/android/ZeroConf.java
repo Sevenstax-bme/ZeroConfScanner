@@ -57,7 +57,7 @@ public class ZeroConf extends CordovaPlugin {
 		lock = wifi.createMulticastLock("ZeroConfPluginLock");
 		lock.setReferenceCounted(true);
 		lock.acquire();
-
+		wifi_ip = wifiInfo.getIpAddress();
 		Log.v("ZeroConf", "Initialized");
 	}
 
@@ -321,7 +321,15 @@ public class ZeroConf extends CordovaPlugin {
 				List<InetAddress> addrs = Collections.list(intf
 						.getInetAddresses());
 				for (InetAddress addr : addrs) {
-					if (!addr.isLoopbackAddress()) {
+					
+					String ipString = String.format(
+                                   	"%d.%d.%d.%d",
+                                    	(wifi_ip & 0xff),
+                                    	(wifi_ip >> 8 & 0xff),
+                                    	(wifi_ip >> 16 & 0xff),
+                                    	(wifi_ip >> 24 & 0xff));
+
+					if (!addr.isLoopbackAddress() && (addr.getHostAddress == ipString) ) {
 						String sAddr = addr.getHostAddress().toUpperCase();
 						if (InetAddressUtils.isIPv4Address(sAddr)) {
 							return addr;
