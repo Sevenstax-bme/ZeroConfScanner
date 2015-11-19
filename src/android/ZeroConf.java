@@ -192,7 +192,7 @@ public class ZeroConf extends CordovaPlugin {
 
     private void list(String type, int timeout) {
         try {
-            JmDNS mdnsQuery = JmDNS.create(ZeroConf.getIPAddress(wifi_ip), HOSTNAME);
+            JmDNS mdnsQuery = JmDNS.create(ZeroConf.getIPAddress(wifi_ip),  ZeroConf.getIPAddress(wifi_ip).getHostName());
             ServiceInfo[] services = mdnsQuery.list(type, timeout);
             sendListCallback("list", services);
             mdnsQuery.close();
@@ -204,7 +204,7 @@ public class ZeroConf extends CordovaPlugin {
 	private void setupWatcher() {
 		Log.d("ZeroConf", "Setup watcher");
 		try {
-			jmdns = JmDNS.create(ZeroConf.getIPAddress(wifi_ip), HOSTNAME);
+			jmdns = JmDNS.create(ZeroConf.getIPAddress(wifi_ip),  ZeroConf.getIPAddress(wifi_ip).getHostName());
 			Log.d("ZeroConf", "Clear Cache");
 			((JmDNSImpl) jmdns).getCache().clear();
 			listener = new ServiceListener() {
