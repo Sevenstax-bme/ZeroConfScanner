@@ -47,7 +47,7 @@ public class ZeroConf extends CordovaPlugin {
 	private JmDNS jmdns = null;
 	private ServiceListener listener;
 	private CallbackContext callback;
-
+	private int wifi_ip = 0;
 	@Override
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
