@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.wifi.WifiManager;
+import android.net.wifi.WifiInfo;
 import android.util.Log;
 
 import javax.jmdns.JmDNS;
@@ -54,7 +55,7 @@ public class ZeroConf extends CordovaPlugin {
 
 		WifiManager wifi = (WifiManager) this.cordova.getActivity()
 				.getSystemService(android.content.Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		WifiInfo wifiInfo = wifi.getConnectionInfo();
 		
 		lock = wifi.createMulticastLock("ZeroConfPluginLock");
 		lock.setReferenceCounted(true);
