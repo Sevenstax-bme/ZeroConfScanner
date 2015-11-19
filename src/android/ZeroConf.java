@@ -54,10 +54,13 @@ public class ZeroConf extends CordovaPlugin {
 
 		WifiManager wifi = (WifiManager) this.cordova.getActivity()
 				.getSystemService(android.content.Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		
 		lock = wifi.createMulticastLock("ZeroConfPluginLock");
 		lock.setReferenceCounted(true);
 		lock.acquire();
-		wifi_ip = wifi.getIpAddress();
+		
+		wifi_ip = wifiInfo.getIpAddress();
 		Log.v("ZeroConf", "Initialized");
 	}
 
@@ -188,7 +191,7 @@ public class ZeroConf extends CordovaPlugin {
 
     private void list(String type, int timeout) {
         try {
-            JmDNS mdnsQuery = JmDNS.create(ZeroConf.getIPAddress());
+            JmDNS mdnsQuery = JmDNS.create(ZeroConf.getIPAddress(wifi_ip));
             ServiceInfo[] services = mdnsQuery.list(type, timeout);
             sendListCallback("list", services);
             mdnsQuery.close();
@@ -200,7 +203,7 @@ public class ZeroConf extends CordovaPlugin {
 	private void setupWatcher() {
 		Log.d("ZeroConf", "Setup watcher");
 		try {
-			jmdns = JmDNS.create(ZeroConf.getIPAddress());
+			jmdns = JmDNS.create(ZeroConf.getIPAddress(wifi_ip));
 			Log.d("ZeroConf", "Clear Cache");
 			((JmDNSImpl) jmdns).getCache().clear();
 			listener = new ServiceListener() {
@@ -313,7 +316,7 @@ public class ZeroConf extends CordovaPlugin {
 	 * 
 	 * @return the first found IP4 address
 	 */
-	public static InetAddress getIPAddress() {
+	public static InetAddress getIPAddress(int wifi_ipaddr) {
 		try {
 			List<NetworkInterface> interfaces = Collections
 					.list(NetworkInterface.getNetworkInterfaces());
@@ -324,10 +327,10 @@ public class ZeroConf extends CordovaPlugin {
 					
 					String ipString = String.format(
                                    	"%d.%d.%d.%d",
-                                    	(wifi_ip & 0xff),
-                                    	(wifi_ip >> 8 & 0xff),
-                                    	(wifi_ip >> 16 & 0xff),
-                                    	(wifi_ip >> 24 & 0xff));
+                                    	(wifi_ipaddr & 0xff),
+                                    	(wifi_ipaddr >> 8 & 0xff),
+                                    	(wifi_ipaddr >> 16 & 0xff),
+                                    	(wifi_ipaddr >> 24 & 0xff));
 
 					if (!addr.isLoopbackAddress() && (addr.getHostAddress() == ipString) ) {
 						String sAddr = addr.getHostAddress().toUpperCase();
