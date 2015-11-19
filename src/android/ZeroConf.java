@@ -319,21 +319,20 @@ public class ZeroConf extends CordovaPlugin {
 	 */
 	public static InetAddress getIPAddress(int wifi_ipaddr) {
 		try {
+			String ipString = String.format(
+                                   		"%d.%d.%d.%d",
+                                    		(wifi_ipaddr & 0xff),
+                                    		(wifi_ipaddr >> 8 & 0xff),
+                                    		(wifi_ipaddr >> 16 & 0xff),
+                                    		(wifi_ipaddr >> 24 & 0xff));
+                                    		
 			List<NetworkInterface> interfaces = Collections
 					.list(NetworkInterface.getNetworkInterfaces());
 			for (NetworkInterface intf : interfaces) {
 				List<InetAddress> addrs = Collections.list(intf
 						.getInetAddresses());
 				for (InetAddress addr : addrs) {
-					
-					String ipString = String.format(
-                                   	"%d.%d.%d.%d",
-                                    	(wifi_ipaddr & 0xff),
-                                    	(wifi_ipaddr >> 8 & 0xff),
-                                    	(wifi_ipaddr >> 16 & 0xff),
-                                    	(wifi_ipaddr >> 24 & 0xff));
-
-					if (!addr.isLoopbackAddress() && (addr.getHostAddress() == ipString) ) {
+					if (!addr.isLoopbackAddress() && (ipString.equals(addr.getHostAddress())) ) {
 						String sAddr = addr.getHostAddress().toUpperCase();
 						if (InetAddressUtils.isIPv4Address(sAddr)) {
 							return addr;
