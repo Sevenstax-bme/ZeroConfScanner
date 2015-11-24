@@ -342,7 +342,7 @@ public class ZeroConf extends CordovaPlugin {
 					if (!addr.isLoopbackAddress() && (ipString.equals(addr.getHostAddress())) ) {
 						String sAddr = addr.getHostAddress().toUpperCase();
 						if (InetAddressUtils.isIPv4Address(sAddr)) {
-							log.d("found IP address to listen: " + sAddr);
+							Log.d("found IP address to listen: " + sAddr);
 							return addr;
 						}
 					}
