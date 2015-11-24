@@ -155,13 +155,20 @@ public class ZeroConf extends CordovaPlugin {
 	}
 
 	private void watch(String type) {
+		Log.d("ZeroConf", "Watch " + type);
 		if (jmdns == null) {
+			Log.d("ZeroConf", "jmdns is null");
 			setupWatcher();
 		}
-		Log.d("ZeroConf", "Watch " + type);
-		Log.d("ZeroConf",
-				"Name: " + jmdns.getName() + " host: " + jmdns.getHostName());
-		jmdns.addServiceListener(type, listener);
+		if (jmdns != null) {
+			
+			Log.d("ZeroConf", "Name: " + jmdns.getName() + " host: " + jmdns.getHostName());
+			jmdns.addServiceListener(type, listener);
+		}
+		else
+		{	
+			Log.d("ZeroConf", "jmdns is null. Cannot add addServiceListener.");
+		}
 	}
 
 	private void unwatch(String type) {
@@ -335,6 +342,7 @@ public class ZeroConf extends CordovaPlugin {
 					if (!addr.isLoopbackAddress() && (ipString.equals(addr.getHostAddress())) ) {
 						String sAddr = addr.getHostAddress().toUpperCase();
 						if (InetAddressUtils.isIPv4Address(sAddr)) {
+							log.d("found IP address to listen: " + sAddr);
 							return addr;
 						}
 					}
