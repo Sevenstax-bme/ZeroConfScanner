@@ -57,7 +57,7 @@ public class ZeroConf extends CordovaPlugin {
 
 		wifiManager = (WifiManager) this.cordova.getActivity()
 				.getSystemService(android.content.Context.WIFI_SERVICE);
-		wifiInfo = wifi.getConnectionInfo();
+		wifiInfo = wifiManager.getConnectionInfo();
 		
 		lock = wifiManager.createMulticastLock("ZeroConfPluginLock");
 		lock.setReferenceCounted(true);
@@ -215,14 +215,14 @@ public class ZeroConf extends CordovaPlugin {
 		try {
 			wifiManager = (WifiManager) this.cordova.getActivity()
 				.getSystemService(android.content.Context.WIFI_SERVICE);
-			wifiInfo = wifi.getConnectionInfo();
+			wifiInfo = wifiManager.getConnectionInfo();
 		
 			lock = wifiManager.createMulticastLock("ZeroConfPluginLock");
 			lock.setReferenceCounted(true);
 			lock.acquire();
 		
 			wifi_ip = wifiInfo.getIpAddress();
-			Log.d("Get Wifi IP = " + wifi_ip);
+			Log.d("Get Wifi IP = ", wifi_ip);
 			
 			
 			jmdns = JmDNS.create(ZeroConf.getIPAddress(wifi_ip));
