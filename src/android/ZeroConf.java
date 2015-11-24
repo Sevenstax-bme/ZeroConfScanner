@@ -48,16 +48,18 @@ public class ZeroConf extends CordovaPlugin {
 	private JmDNS jmdns = null;
 	private ServiceListener listener;
 	private CallbackContext callback;
+	private WifiManager wifiManager;
+	private WifiInfo wifiInfo;	
 	private int wifi_ip = 0;
 	@Override
 	public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 		super.initialize(cordova, webView);
 
-		WifiManager wifi = (WifiManager) this.cordova.getActivity()
+		wifiManager = (WifiManager) this.cordova.getActivity()
 				.getSystemService(android.content.Context.WIFI_SERVICE);
-		WifiInfo wifiInfo = wifi.getConnectionInfo();
+		wifiInfo = wifi.getConnectionInfo();
 		
-		lock = wifi.createMulticastLock("ZeroConfPluginLock");
+		lock = wifiManager.createMulticastLock("ZeroConfPluginLock");
 		lock.setReferenceCounted(true);
 		lock.acquire();
 		
@@ -211,6 +213,18 @@ public class ZeroConf extends CordovaPlugin {
 	private void setupWatcher() {
 		Log.d("ZeroConf", "Setup watcher");
 		try {
+			wifiManager = (WifiManager) this.cordova.getActivity()
+				.getSystemService(android.content.Context.WIFI_SERVICE);
+			wifiInfo = wifi.getConnectionInfo();
+		
+			lock = wifiManager.createMulticastLock("ZeroConfPluginLock");
+			lock.setReferenceCounted(true);
+			lock.acquire();
+		
+			wifi_ip = wifiInfo.getIpAddress();
+			Log.d("Get Wifi IP = " + wifi_ip.toString());
+			
+			
 			jmdns = JmDNS.create(ZeroConf.getIPAddress(wifi_ip));
 			Log.d("ZeroConf", "Clear Cache");
 			((JmDNSImpl) jmdns).getCache().clear();
