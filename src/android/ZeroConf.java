@@ -222,7 +222,7 @@ public class ZeroConf extends CordovaPlugin {
 			lock.acquire();
 		
 			wifi_ip = wifiInfo.getIpAddress();
-			Log.d("Get Wifi IP = " + wifi_ip.toString());
+			Log.d("Get Wifi IP = " + wifi_ip);
 			
 			
 			jmdns = JmDNS.create(ZeroConf.getIPAddress(wifi_ip));
