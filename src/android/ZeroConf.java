@@ -28,7 +28,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginResult.Status;
-import org.apache.http.conn.util.InetAddressUtils;
+//import org.apache.http.conn.util.InetAddressUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -354,9 +354,9 @@ public class ZeroConf extends CordovaPlugin {
 						.getInetAddresses());
 				for (InetAddress addr : addrs) {
 					if (!addr.isLoopbackAddress() && (ipString.equals(addr.getHostAddress())) ) {
-						String sAddr = addr.getHostAddress().toUpperCase();
-						if (InetAddressUtils.isIPv4Address(sAddr)) {
-							Log.d("found IP address to listen: " , sAddr);
+						//String sAddr = addr.getHostAddress().toUpperCase();
+						if (addr instanceof java.net.Inet4Address) {
+							//Log.d("found IP address to listen: " , sAddr);
 							return addr;
 						}
 					}
